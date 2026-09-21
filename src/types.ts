@@ -1,26 +1,46 @@
-export type P40Mode = 'solid_sphere_theorems' | 'hollow_sphere_theorems' | 'tunnel_through_earth' | 'potential_well_energy';
+export type Language = 'bn' | 'en';
+export type AppTheme = 'clean_bright' | 'midnight';
+export type PresetMode = 'potential_well' | 'hollow_sphere' | 'solid_sphere' | 'earth_tunnel';
 
-export interface SolidSphereParams {
-  probeRadiusFrac: number; // 0 to 3.0 R
-  sphereMass: number; // 10^24 kg
-  sphereRadiusKm: number; // 6371 km
+export interface SimulationParams {
+  preset: PresetMode;
+  theme: AppTheme;
+
+  // Potential Well & Spheres
+  centralMass: number; // 10^24 kg (Earth = 5.972)
+  sphereRadius: number; // 10^6 m (Earth = 6.371)
+  probeDist: number; // 10^6 m (probe position r)
+  testMass: number; // kg (default 100 kg)
+
+  // Earth Tunnel SHM
+  tunnelAmplitudeKm: number; // km (default 6371 km)
+  tunnelFriction: number; // 0 for ideal SHM
+
+  // Toggles
+  showVectors: boolean;
+  showEnergyBars: boolean;
+  showGrid: boolean;
+  slowMo: boolean;
 }
 
-export interface HollowSphereParams {
-  probeRadiusFrac: number; // 0 to 3.0 R
-  shellMass: number; // 10^24 kg
-  shellRadiusKm: number; // 6371 km
-}
+export interface TelemetryState {
+  elapsedTime: number;
 
-export interface TunnelParams {
-  sphereType: 'solid_earth' | 'hollow_shell';
-  tunnelAngleDeg: number; // 0 (diametric) to 45 deg
-  particleMass: number; // kg
-  dampingFactor: number; // 0 (frictionless) to 0.05
-}
+  // Potential & Energy
+  potentialV: number; // MJ/kg
+  potentialEnergyU: number; // GJ
+  fieldE: number; // N/kg
+  surfaceV: number; // MJ/kg
+  centerV: number; // MJ/kg
+  vRatio: number; // V_c / V_s (1.5 for solid sphere, 1.0 for hollow)
 
-export interface PotentialWellParams {
-  centralMass: number;
-  initialHeightFrac: number;
-  showEquipotentialLines: boolean;
+  // Tunnel SHM
+  tunnelPosKm: number; // km (-R to +R)
+  tunnelVelKmS: number; // km/s
+  tunnelAccMS2: number; // m/s^2
+  kineticEnergyGJ: number;
+  potentialEnergyGJ: number;
+  totalEnergyGJ: number;
+  shmPeriodMin: number; // 84.6 minutes
+  transitTimeMin: number; // 42.3 minutes
 }
