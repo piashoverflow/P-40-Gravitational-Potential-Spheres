@@ -138,8 +138,10 @@ export const MotionCanvas: React.FC<MotionCanvasProps> = ({
       ctx.textAlign = 'center';
       ctx.fillText('M', centerX, height - 66);
 
-      // Probe on curve
-      const probeDistPix = Math.min(width * 0.4, Math.max(30, (params.probeDist / 25) * (width * 0.38)));
+      // Probe on curve (oscillates/rolls down and up when playing)
+      const rollOffset = isPlaying ? Math.sin(telemetry.elapsedTime * 2.5) * (width * 0.08) : 0;
+      const baseDistPix = Math.min(width * 0.4, Math.max(30, (params.probeDist / 25) * (width * 0.38)));
+      const probeDistPix = Math.max(25, baseDistPix + rollOffset);
       const probeX = centerX + probeDistPix;
       const probeDepth = Math.min(height - 120, cConst / (probeDistPix * 0.12));
       const probeY = baseZeroY + probeDepth;
@@ -199,10 +201,10 @@ export const MotionCanvas: React.FC<MotionCanvasProps> = ({
       ctx.arc(centerX, centerY, 3, 0, Math.PI * 2);
       ctx.fill();
 
-      // Probe
+      // Probe (revolves around shell when playing)
       const probeScale = rPix / (params.sphereRadius || 1);
       const probeR = params.probeDist * probeScale;
-      const probeAngle = -Math.PI / 4;
+      const probeAngle = -Math.PI / 4 + (isPlaying ? telemetry.elapsedTime * 0.6 : 0);
       const px = centerX + probeR * Math.cos(probeAngle);
       const py = centerY + probeR * Math.sin(probeAngle);
 
@@ -260,10 +262,10 @@ export const MotionCanvas: React.FC<MotionCanvasProps> = ({
       ctx.textAlign = 'right';
       ctx.fillText('V_c = 1.5 V_s', centerX - 8, centerY + 3);
 
-      // Probe
+      // Probe (revolves around sphere when playing)
       const probeScale = rPix / (params.sphereRadius || 1);
       const probeR = params.probeDist * probeScale;
-      const probeAngle = -Math.PI / 4;
+      const probeAngle = -Math.PI / 4 + (isPlaying ? telemetry.elapsedTime * 0.6 : 0);
       const px = centerX + probeR * Math.cos(probeAngle);
       const py = centerY + probeR * Math.sin(probeAngle);
 
