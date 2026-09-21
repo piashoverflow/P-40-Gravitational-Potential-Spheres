@@ -1,0 +1,6 @@
+{
+  "name": "P-40: Gravitational Potential & Spherical Theorems",
+  "description": "Interactive physics simulation of gravitational potential wells, hollow shell theorem, solid sphere theorem, and diametric Earth tunnel SHM.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
